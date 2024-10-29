@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/copy.png</file>
+        <file>res/cut.png</file>
+        <file>res/file-open.png</file>
+        <file>res/find.png</file>
+        <file>res/font.png</file>
+        <file>res/icon-test.png</file>
+        <file>res/line_number.png</file>
+        <file>res/new.png</file>
+        <file>res/paste.png</file>
+        <file>res/printer.png</file>
+        <file>res/redo.png</file>
+        <file>res/replace.png</file>
+        <file>res/save.png</file>
+        <file>res/save-as.png</file>
+        <file>res/status.png</file>
+        <file>res/tool.png</file>
+        <file>res/undo.png</file>
+        <file>res/wrap.png</file>
+    </qresource>
+</RCC>
