@@ -69,6 +69,7 @@
     <property name="title">
      <string>帮助(&amp;H)</string>
     </property>
+    <addaction name="actionAbout"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_E"/>
@@ -99,6 +100,7 @@
    <addaction name="actionPaste"/>
    <addaction name="separator"/>
    <addaction name="actionReplace"/>
+   <addaction name="actionFind"/>
    <addaction name="separator"/>
    <addaction name="actionFont"/>
    <addaction name="actionShowLineNumber"/>
@@ -258,7 +260,7 @@
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
-  <action name="action">
+  <action name="actionFind">
    <property name="icon">
     <iconset resource="notepad.qrc">
      <normaloff>:/res/find.png</normaloff>:/res/find.png</iconset>
@@ -396,6 +398,17 @@
    </property>
    <property name="toolTip">
     <string>显示行号</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::HelpAbout"/>
+   </property>
+   <property name="text">
+    <string>About</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

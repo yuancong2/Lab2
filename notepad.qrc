@@ -18,5 +18,6 @@
         <file>res/tool.png</file>
         <file>res/undo.png</file>
         <file>res/wrap.png</file>
+        <file>res/Logo.png</file>
     </qresource>
 </RCC>
