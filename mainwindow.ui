@@ -49,11 +49,21 @@
      <string>文件(&amp;F)</string>
     </property>
     <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menu_E">
     <property name="title">
      <string>编辑(&amp;E)</string>
     </property>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionFind"/>
+    <addaction name="actionReplace"/>
+    <addaction name="actionSelectAll"/>
    </widget>
    <widget class="QMenu" name="menu_O">
     <property name="title">
@@ -71,6 +81,8 @@
     <property name="title">
      <string>查看(&amp;V)</string>
     </property>
+    <addaction name="actionToolbar"/>
+    <addaction name="actionStatusBar"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -114,6 +126,7 @@
    <addaction name="actionLineWrap"/>
    <addaction name="separator"/>
    <addaction name="actionToolbar"/>
+   <addaction name="actionStatusBar"/>
   </widget>
   <action name="actionNew">
    <property name="icon">
@@ -337,6 +350,9 @@
    </property>
   </action>
   <action name="actionToolbar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="notepad.qrc">
      <normaloff>:/res/tool.png</normaloff>:/res/tool.png</iconset>
@@ -352,6 +368,9 @@
    </property>
   </action>
   <action name="actionStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="notepad.qrc">
      <normaloff>:/res/status.png</normaloff>:/res/status.png</iconset>

@@ -47,6 +47,9 @@ MainWindow::MainWindow(QWidget *parent)
 
         ui->actionLineWrap->setChecked(true);
     }
+    ui->actionStatusBar->setChecked(true);
+    ui->actionToolbar->setChecked(true);
+
 }
 
 MainWindow::~MainWindow()
@@ -63,14 +66,14 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionFind_triggered()
 {
-    SearchDialog dlg;
+    SearchDialog dlg(this, ui->textEdit);
     dlg.exec();
 }
 
 
 void MainWindow::on_actionReplace_triggered()
 {
-    ReplaceDialog dlg;
+    ReplaceDialog dlg(this, ui->textEdit);
     dlg.exec();
 }
 
@@ -341,5 +344,28 @@ void MainWindow::on_actionFont_triggered()
 
     if (ok)
         ui->textEdit->setFont(font);
+}
+
+
+void MainWindow::on_actionStatusBar_triggered()
+{
+    bool visible = ui->statusbar->isVisible();
+    ui->statusbar->setVisible(!visible);
+    ui->actionStatusBar->setChecked(!visible);
+}
+
+
+void MainWindow::on_actionToolbar_triggered()
+{
+    bool visible = ui->toolBar->isVisible();
+    ui->toolBar->setVisible(!visible);
+    ui->actionToolbar->setChecked(!visible);
+}
+
+
+void MainWindow::on_actionExit_triggered()
+{
+    if (userEditConfirmed())
+        exit(0);
 }
 
