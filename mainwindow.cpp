@@ -8,6 +8,7 @@
 #include "QTextStream"
 #include "QColorDialog"
 #include "QFontDialog"
+#include "QRegularExpression"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,11 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
     textChanged = false;
     on_actionNew_triggered();
 
-    statusLabel.setMaximumWidth(150);
+    statusLabel.setMaximumWidth(180);
     statusLabel.setText("length:" + QString::number(0) + "  lines:" + QString::number(1));
     ui->statusbar->addPermanentWidget(&statusLabel);
 
-    statusCursorLabel.setMaximumWidth(150);
+    statusCursorLabel.setMaximumWidth(180);
     statusCursorLabel.setText("LN:" + QString::number(0) + "  Col:" + QString::number(1));
     ui->statusbar->addPermanentWidget(&statusCursorLabel);
 
@@ -50,6 +51,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->actionStatusBar->setChecked(true);
     ui->actionToolbar->setChecked(true);
 
+    on_actionShowLineNumber_triggered(false);
+    // connect(ui->actionShowLineNumber, SIGNAL(triggered(bool)), ui->textEdit,
+    //         SLOT(hideLineNumberArea(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -212,9 +216,12 @@ void MainWindow::on_actionSaveAs_triggered()
 
 void MainWindow::on_textEdit_textChanged()
 {
-    if (!textChanged)
+    if (!textChanged) {
         this->setWindowTitle("*" + this->windowTitle());
-    textChanged = true;
+        textChanged = true;
+    }
+    statusLabel.setText("length:" + QString::number(ui->textEdit->toPlainText().length()) + "  lines:" +
+                        QString::number(ui->textEdit->document()->lineCount()));
 }
 
 bool MainWindow::userEditConfirmed()
@@ -297,11 +304,31 @@ void MainWindow::on_textEdit_undoAvailable(bool b)
 }
 
 
+void MainWindow::on_actionBackgroundColor_triggered()
+{
+    QColor color = QColorDialog::getColor(Qt::black, this, "选择颜色");
+    if (color.isValid()) {
+        // 获取当前的样式表
+        QString currentStyleSheet = ui->textEdit->styleSheet();
+        // 使用正则表达式移除现有的背景色设置
+        QRegularExpression bgRegExp(R"(background-color\s*:\s*[^;]+;)");
+        currentStyleSheet.replace(bgRegExp, "");
+        // 添加新的背景色设置
+        ui->textEdit->setStyleSheet(currentStyleSheet + QString("background-color: %1;").arg(color.name()));
+    }
+}
+
 void MainWindow::on_actionFrontColor_triggered()
 {
     QColor color = QColorDialog::getColor(Qt::black, this, "选择颜色");
     if (color.isValid()) {
-        ui->textEdit->setStyleSheet(QString("QPlainTextEdit {color:%1}").arg(color.name()));
+        // 获取当前的样式表
+        QString currentStyleSheet = ui->textEdit->styleSheet();
+        // 使用正则表达式移除现有的前景色设置
+        QRegularExpression fgRegExp(R"(color\s*:\s*[^;]+;)");
+        currentStyleSheet.replace(fgRegExp, "");
+        // 添加新的前景色设置
+        ui->textEdit->setStyleSheet(currentStyleSheet + QString("color: %1;").arg(color.name()));
     }
 }
 
@@ -312,13 +339,19 @@ void MainWindow::on_actionFontBackgroundColor_triggered()
 }
 
 
-void MainWindow::on_actionBackgroundColor_triggered()
-{
-    QColor color = QColorDialog::getColor(Qt::black, this, "选择颜色");
-    if (color.isValid()) {
-        ui->textEdit->setStyleSheet(QString("QPlainTextEdit {background-color : %1}").arg(color.name()));
-    }
-}
+// void MainWindow::on_actionBackgroundColor_triggered()
+// {
+//     QColor color = QColorDialog::getColor(Qt::black, this, "选择颜色");
+//     if (color.isValid()) {
+//         // 获取当前的样式表
+//         QString currentStyleSheet = ui->textEdit->styleSheet();
+//         // 使用正则表达式移除现有的背景色设置
+//         QRegExp bgRegExp("background-color\\s*:\\s*[^;]+;");
+//         currentStyleSheet.replace(bgRegExp, "");
+//         // 添加新的背景色设置
+//         ui->textEdit->setStyleSheet(currentStyleSheet + QString("background-color: %1;").arg(color.name()));
+//     }
+// }
 
 
 void MainWindow::on_actionLineWrap_triggered()
@@ -367,5 +400,32 @@ void MainWindow::on_actionExit_triggered()
 {
     if (userEditConfirmed())
         exit(0);
+}
+
+
+void MainWindow::on_textEdit_cursorPositionChanged()
+{
+    int col = 0;
+    int ln = 0;
+    int flg = 0;
+    int pos = ui->textEdit->textCursor().position();
+    QString text = ui->textEdit->toPlainText();
+
+    for (int i = 0; i < pos; i++) {
+        if (text[i] == '\n') {
+            ln ++;
+            flg = 1;
+        }
+    }
+    flg ++;
+    col = pos - flg;
+    statusCursorLabel.setText("Ln: " + QString::number(ln + 1) + "  Col:" + QString::number(col + 1));
+
+
+}
+
+void MainWindow::on_actionShowLineNumber_triggered(bool checked)
+{
+    ui->textEdit->hideLineNumberArea(!checked);
 }
 
